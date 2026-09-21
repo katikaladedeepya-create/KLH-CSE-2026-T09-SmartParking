@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project source="2.7.1" version="1.0">
+  <lib desc="#Wiring" name="0">
+    <tool name="Splitter">
+      <a name="facing" val="west"/>
+      <a name="fanout" val="4"/>
+      <a name="incoming" val="4"/>
+    </tool>
+    <tool name="Pin">
+      <a name="tristate" val="false"/>
+    </tool>
+    <tool name="Bit Extender">
+      <a name="in_width" val="3"/>
+      <a name="out_width" val="4"/>
+    </tool>
+  </lib>
+  <lib desc="#Gates" name="1">
+    <tool name="NOT Gate"/>
+    <tool name="AND Gate"/>
+  </lib>
+  <lib desc="#Plexers" name="2"/>
+  <lib desc="#Arithmetic" name="3">
+    <tool name="BitAdder">
+      <a name="width" val="1"/>
+      <a name="inputs" val="4"/>
+    </tool>
+  </lib>
+  <lib desc="#Memory" name="4"/>
+  <lib desc="#I/O" name="5">
+    <tool name="LED"/>
+    <tool name="7-Segment Display"/>
+  </lib>
+  <lib desc="#Base" name="6">
+    <tool name="Text Tool">
+      <a name="text" val=""/>
+      <a name="font" val="SansSerif plain 12"/>
+      <a name="halign" val="center"/>
+      <a name="valign" val="base"/>
+    </tool>
+  </lib>
+  <main name="main"/>
+  <options>
+    <a name="gateUndefined" val="ignore"/>
+    <a name="simlimit" val="1000"/>
+    <a name="simrand" val="0"/>
+  </options>
+  <mappings>
+    <tool lib="6" map="Button2" name="Menu Tool"/>
+    <tool lib="6" map="Button3" name="Menu Tool"/>
+    <tool lib="6" map="Ctrl Button1" name="Menu Tool"/>
+  </mappings>
+  <toolbar>
+    <tool lib="6" name="Poke Tool"/>
+    <tool lib="6" name="Edit Tool"/>
+    <tool lib="6" name="Text Tool"/>
+    <sep/>
+    <tool lib="0" name="Pin">
+      <a name="tristate" val="false"/>
+    </tool>
+    <tool lib="0" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="labelloc" val="east"/>
+    </tool>
+    <tool lib="1" name="NOT Gate"/>
+    <tool lib="1" name="AND Gate"/>
+    <tool lib="1" name="OR Gate"/>
+  </toolbar>
+  <circuit name="main">
+    <a name="circuit" val="main"/>
+    <a name="clabel" val=""/>
+    <a name="clabelup" val="east"/>
+    <a name="clabelfont" val="SansSerif plain 12"/>
+
+    <!-- Inputs S1, S2, S3, S4 -->
+    <comp lib="0" loc="(70,80)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="S1"/>
+    </comp>
+    <comp lib="0" loc="(70,120)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="S2"/>
+    </comp>
+    <comp lib="0" loc="(70,160)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="S3"/>
+    </comp>
+    <comp lib="0" loc="(70,200)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="S4"/>
+    </comp>
+
+    <!-- Input CAR -->
+    <comp lib="0" loc="(70,300)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="CAR"/>
+    </comp>
+
+    <!-- Top Section: GATE CONTROL -->
+    <!-- 4-Input AND gate for FULL detection -->
+    <comp lib="1" loc="(240,140)" name="AND Gate">
+      <a name="inputs" val="4"/>
+    </comp>
+    <!-- Inverter for AVAILABLE -->
+    <comp lib="1" loc="(320,140)" name="NOT Gate"/>
+    <!-- 2-Input AND gate for GATE_OPEN -->
+    <comp lib="1" loc="(400,150)" name="AND Gate">
+      <a name="inputs" val="2"/>
+    </comp>
+
+    <!-- Outputs / Indicators -->
+    <comp lib="5" loc="(270,100)" name="LED">
+      <a name="facing" val="south"/>
+      <a name="color" val="#f00000"/>
+      <a name="label" val="FULL"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+    <comp lib="5" loc="(440,150)" name="LED">
+      <a name="color" val="#00f000"/>
+      <a name="label" val="GATE_OPEN"/>
+      <a name="labelloc" val="east"/>
+    </comp>
+
+    <!-- Bottom Section: FREE SLOT COUNTER -->
+    <!-- Inverting slot occupancy to get free slots -->
+    <comp lib="1" loc="(170,380)" name="NOT Gate"/>
+    <comp lib="1" loc="(170,420)" name="NOT Gate"/>
+    <comp lib="1" loc="(170,460)" name="NOT Gate"/>
+    <comp lib="1" loc="(170,500)" name="NOT Gate"/>
+
+    <!-- Bit Adder: counts number of high bits (free slots) -->
+    <comp lib="3" loc="(320,440)" name="BitAdder">
+      <a name="width" val="1"/>
+      <a name="inputs" val="4"/>
+    </comp>
+
+    <!-- Bit Extender: expands 3-bit sum output to 4-bit bus for 7-segment display -->
+    <comp lib="0" loc="(410,440)" name="BitExtender">
+      <a name="in_width" val="3"/>
+      <a name="out_width" val="4"/>
+    </comp>
+
+    <!-- 7-Segment Display (Hex Digit display for FREE SLOTS) -->
+    <comp lib="5" loc="(480,440)" name="Hex Digit Display"/>
+
+    <!-- Wiring - S1 to S4 distribution -->
+    <wire from="(70,80)" to="(110,80)"/>
+    <wire from="(110,80)" to="(110,380)"/>
+    <wire from="(110,80)" to="(190,80)"/>
+    <wire from="(190,80)" to="(190,120)"/>
+
+    <wire from="(70,120)" to="(120,120)"/>
+    <wire from="(120,120)" to="(120,420)"/>
+    <wire from="(120,120)" to="(190,130)"/>
+
+    <wire from="(70,160)" to="(130,160)"/>
+    <wire from="(130,160)" to="(130,460)"/>
+    <wire from="(130,160)" to="(190,150)"/>
+
+    <wire from="(70,200)" to="(140,200)"/>
+    <wire from="(140,200)" to="(140,500)"/>
+    <wire from="(140,200)" to="(190,160)"/>
+
+    <!-- Gate Control Wires -->
+    <wire from="(240,140)" to="(270,140)"/>
+    <wire from="(270,140)" to="(270,100)"/>
+    <wire from="(270,140)" to="(290,140)"/>
+    <wire from="(320,140)" to="(350,140)"/>
+    <wire from="(350,130)" to="(350,140)"/>
+
+    <wire from="(70,300)" to="(350,300)"/>
+    <wire from="(350,170)" to="(350,300)"/>
+
+    <wire from="(400,150)" to="(440,150)"/>
+
+    <!-- Free Slot Counter Inverter Inputs & Splitter Wires -->
+    <wire from="(110,380)" to="(140,380)"/>
+    <wire from="(120,420)" to="(140,420)"/>
+    <wire from="(130,460)" to="(140,460)"/>
+    <wire from="(140,500)" to="(140,500)"/>
+
+    <!-- 4-bit bus merger into BitAdder -->
+    <comp lib="0" loc="(240,440)" name="Splitter">
+      <a name="facing" val="west"/>
+      <a name="fanout" val="4"/>
+      <a name="incoming" val="4"/>
+    </comp>
+
+    <wire from="(170,380)" to="(220,380)"/>
+    <wire from="(220,380)" to="(220,400)"/>
+
+    <wire from="(170,420)" to="(220,420)"/>
+    <wire from="(220,410)" to="(220,420)"/>
+
+    <wire from="(170,460)" to="(220,460)"/>
+    <wire from="(220,420)" to="(220,460)"/>
+
+    <wire from="(170,500)" to="(220,500)"/>
+    <wire from="(220,430)" to="(220,500)"/>
+
+    <!-- Arithmetic chain to display -->
+    <wire from="(240,440)" to="(280,440)"/>
+    <wire from="(320,440)" to="(370,440)"/>
+    <wire from="(410,440)" to="(480,440)"/>
+  </circuit>
+</project>
