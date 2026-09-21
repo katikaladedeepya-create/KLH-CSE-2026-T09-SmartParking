@@ -28,10 +28,10 @@ The project is initially designed as a simulation and can later be implemented u
 
 | S.No | Team Member Name | Registration / ID Number |
 |------|------------------|--------------------------|
-| 1 | <Team Member 1> | <ID Number> |
-| 2 | <Team Member 2> | <ID Number> |
-| 3 | <Team Member 3> | <ID Number> |
-| 4 | <Team Member 4> | <ID Number> |
+| 1 | <Dedeepya> | <2620030578> |
+| 2 | <Hasini> | <2620030565> |
+| 3 | <Siddharath> | <2620030575> |
+| 4 | <Sriram Karan> | <2620030521> |
 
 ---
 
