@@ -37,7 +37,7 @@ The project is initially designed as a simulation and can later be implemented u
 
 ## Supervisor
 
-**Supervisor Name:** <Supervisor Name>
+**Supervisor Name:** <karthik sir>
 
 ---
 
